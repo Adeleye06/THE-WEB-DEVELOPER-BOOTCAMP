@@ -17,3 +17,6 @@ console.log(firstLink.href); */
 /* for (let link of allLinks){
     link.style.color = 'rgb(0, 108, 134)';
 } */
+
+//in order for you to get the style of an element in html
+//you can use the window.getComputedStyle(whateverElement).whatever you need
