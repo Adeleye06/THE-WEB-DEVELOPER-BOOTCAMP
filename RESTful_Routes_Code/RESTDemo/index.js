@@ -1,11 +1,13 @@
 const express = require("express");
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const { v4: uuid } = require('uuid');
 const app = express();
 const path = require('path');
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride('_method'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -52,13 +54,29 @@ app.get('/comments/:id', (req, res) => {
     res.render('comments/show', {comment});
 })
 
-app.patch('comments/:id', (req, res) => {
-    const {id} = req.params;
+app.get('/comments/:id/edit', (req, res) => {
+    const { id } = req.params;
+    const comment = comments.find(c => c.id === id);
+    res.render('comments/edit', {comment});
+})
+app.patch('/comments/:id', (req, res) => {
+    const { id } = req.params;
+    const foundComment = comments.find(c => c.id === id);
+    
+    //get new text from req.body
     const newCommentText = req.body.comment;
-    const foundComment = comments.find(c => c.id === id );
+    //update the comment with the data from req.body:
     foundComment.comment = newCommentText;
+    //redirect back to index (or wherever you want)
     res.redirect('/comments');
 })
+
+app.delete('/comments/:id', (req, res) => {
+    const { id } = req.params;
+    comments = comments.filter(c => c.id !== id);
+    res.redirect('/comments');
+})
+
 app.get('/tacos', (req, res) => {
     res.send('GET / tacos response');
 })
