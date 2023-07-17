@@ -18,6 +18,7 @@ app.get("/r/:subreddit", (req, res) => {
   const data = redditData[subreddit];
   if (data) {
     res.render("subreddit", { ...data });
+    
   } else {
     res.render("notfound", { subreddit });
   }
