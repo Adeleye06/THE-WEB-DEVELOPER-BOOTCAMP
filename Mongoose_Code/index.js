@@ -24,7 +24,7 @@ const Movie = mongoose.model("Movie", movieSchema);
   rating: "R",
 }); */
 
-Movie.insertMany([
+/* Movie.insertMany([
   { title: "Amelie", year: 2001, score: 8.3, rating: "R" },
   { title: "Alien", year: 1979, score: 8.1, rating: "R" },
   { title: "The Iron Giant", year: 1999, score: 7.5, rating: "PG" },
@@ -33,4 +33,4 @@ Movie.insertMany([
 ]).then((data) => {
   console.log("IT WORKED");
   console.log(data);
-});
+}); */
