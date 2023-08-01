@@ -55,6 +55,8 @@ app.use((err, req, res, next) => {
     console.log('**************************************');
     console.log('****************ERROR*****************');
     console.log('**************************************');
+
+    res.status(500).send('OH BOY WE GOT AN ERROR!');
 })
 app.listen(3000, () => {
     console.log('App is running on localhost:3000');
