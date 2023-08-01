@@ -40,17 +40,18 @@ app.get('/secret', verifyPassword, (req, res) => {
     res.send('MY SECRET IS: Sometimes I wear headphones in public so i do not have to talk to anyone');
 })
 
+app.get('/admin', (res, req) => {
+    throw new AppError('You are not an admin', 403);
+})
+
 app.use((req, res) => {
     res.status(404).send('NOT FOUND');
 })
 
 //error handling middleware
 app.use((err, req, res, next) => {
-    console.log('**************************************');
-    console.log('****************ERROR*****************');
-    console.log('**************************************');
-    console.log(err);
-    next(err);
+   const {status = 500, message = 'Something went wrong'} = err;
+    res.status(status).send(message);
 })
 app.listen(3000, () => {
     console.log('App is running on localhost:3000');
