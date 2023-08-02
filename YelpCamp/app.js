@@ -6,6 +6,7 @@ const Campground = require('./models/campground')
 const methodOverride = require('method-override');
 const mongoose = require("mongoose");
 const catchAsync = require('./utilities/catchAsync');
+const ExpressError = require('./utilities/ExpressError');
 mongoose
   .connect("mongodb://127.0.0.1:27017/yelp-camp")
   .then(() => {
@@ -38,52 +39,57 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 //route to access all campgrounds
-app.get('/campgrounds', async (req, res) => {
+app.get('/campgrounds', catchAsync(async (req, res) => {
   const allCampgrounds = await Campground.find({});
   res.render('campgrounds/index', {allCampgrounds});
-});
+}));
 
 //route that adds the new campground to the database
 app.post('/campgrounds', catchAsync(async(req, res, next) => {
+    if(!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();
     res.redirect(`/campgrounds/${newCampground._id}`);
 }))
 
 
-app.get('/campgrounds/:id', async(req, res) => {
+app.get('/campgrounds/:id', catchAsync(async(req, res) => {
   const {id} = req.params;
   const foundCampground = await Campground.findById(id);
   res.render('campgrounds/show', {foundCampground});
-});
+}));
 
 
 //this route serves the form in order for user to edit
-app.get('/campgrounds/:id/edit', async (req, res) => {
+app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
   const {id} = req.params;
   const foundCampground = await Campground.findById(id);
   res.render('campgrounds/edit', {foundCampground});
-})
+}));
 
 //this route is to execute the PUT request from the form
-app.put('/campgrounds/:id', async (req, res) => {
+app.put('/campgrounds/:id', catchAsync(async (req, res) => {
   const {id} = req.params;
   const updatedCampground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
   res.redirect(`/campgrounds/${updatedCampground._id}`);
-  });
+  }));
 
 
 //route to delete any campground
-app.delete('/campgrounds/:id', async(req, res) => {
+app.delete('/campgrounds/:id', catchAsync(async(req, res) => {
     const {id} = req.params;
     const deletedCampground = await Campground.findByIdAndDelete(id);
     res.redirect('/campgrounds')
+  }));
+
+  app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404));
   })
-
-
   //error handling middleware
   app.use((err, req, res, next) => {
-    res.send('OH BOY , WE GOT AN ERROR');
+    const {statusCode = 500} = err;
+    if(!err.message) err.message = 'Oh No, Something Went Wrong!'
+    res.status(statusCode).render('error', {err});
   })
 app.listen(3000, () => {
     console.log('Serving at port 3000');
