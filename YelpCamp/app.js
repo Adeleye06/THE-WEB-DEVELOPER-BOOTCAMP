@@ -4,8 +4,8 @@ const app = express();
 const ejsMate = require('ejs-mate');
 const Campground = require('./models/campground')
 const methodOverride = require('method-override');
-
 const mongoose = require("mongoose");
+const catchAsync = require('./utilities/catchAsync');
 mongoose
   .connect("mongodb://127.0.0.1:27017/yelp-camp")
   .then(() => {
@@ -44,11 +44,11 @@ app.get('/campgrounds', async (req, res) => {
 });
 
 //route that adds the new campground to the database
-app.post('/campgrounds', async(req, res) => {
-  const newCampground = new Campground(req.body.campground);
-  await newCampground.save();
-  res.redirect(`/campgrounds/${newCampground._id}`);
-})
+app.post('/campgrounds', catchAsync(async(req, res, next) => {
+    const newCampground = new Campground(req.body.campground);
+    await newCampground.save();
+    res.redirect(`/campgrounds/${newCampground._id}`);
+}))
 
 
 app.get('/campgrounds/:id', async(req, res) => {
@@ -80,6 +80,11 @@ app.delete('/campgrounds/:id', async(req, res) => {
     res.redirect('/campgrounds')
   })
 
+
+  //error handling middleware
+  app.use((err, req, res, next) => {
+    res.send('OH BOY , WE GOT AN ERROR');
+  })
 app.listen(3000, () => {
     console.log('Serving at port 3000');
 })

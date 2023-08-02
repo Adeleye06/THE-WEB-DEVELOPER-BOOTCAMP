@@ -5,6 +5,8 @@
     <form
       action="/campgrounds/<%=foundCampground._id%>?_method=PUT"
       method="POST"
+      novalidate
+      class="validated-form"
     >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
@@ -14,17 +16,25 @@
           id="title"
           name="campground[title]"
           value="<%= foundCampground.title %>"
+          required
         />
+        <div class="valid-feedback">
+          Looks good
+        </div>
       </div> 
       <div class="mb-3">
         <label class="form-label" for="location">Location</label>
-      7u6yt5reasZ    <input
+       <input
           class="form-control"
           type="text"
           id="location"
           name="campground[location]"
           value="<%=foundCampground.location%>"
+          required
         />
+        <div class="valid-feedback">
+          Looks good
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="image">Image Url</label>
@@ -34,7 +44,11 @@
           id="image"
           name="campground[image]"
           value="<%=foundCampground.image%>"
+          required
         />
+        <div class="valid-feedback">
+          Looks good
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="price">Campground Price</label>
@@ -49,7 +63,11 @@
             aria-describedby="price-label"
             name="campground[price]"
             value="<%=foundCampground.price%>"
+            required
           />
+          <div class="valid-feedback">
+            Looks good
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -59,16 +77,20 @@
           type="text"
           id="description"
           name="campground[description]"
+          required
         >
 <%=foundCampground.description%></textarea
         >
+        <div class="valid-feedback">
+          Looks good
+        </div>
       </div>
       <div class="mb-3">
         <button class="btn btn-info">Update Campground</button>
       </div>
     </form>
     <div class="mb-5">
-        <a  href="/campgrounds/<%=foundCampground._id%>">Back to Campgrounds</a>
+        <a href="/campgrounds/<%=foundCampground._id%>">Back to Campgrounds</a>
     </div>
   </div>
 </div>
