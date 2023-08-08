@@ -11,18 +11,19 @@ app.get('/greet', (req, res) => {
 app.get('/setname', (req, res) => {
     res.cookie('name', 'stevie chicks');
     res.send('OK SENT YOU A COOKIE');
-    
 })
+
 app.get('/getsignedcookie', (req, res) => {
     res.cookie('fruit', 'orange', {signed: true});
     res.send('okay signed fruit cookie');
 })
+
 app.get('/verifyfruit', (req, res) => {
     console.log(req.cookies);
     console.log(req.signedCookies);
     res.send(req.signedCookies);
-
 })
+
 app.listen(3000, () => {
     console.log('SERVING');
 })
