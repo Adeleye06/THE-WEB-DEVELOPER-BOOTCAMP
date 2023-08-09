@@ -5,11 +5,13 @@ const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const ExpressError = require("./utilities/ExpressError");
-const session = require('express-session');
-const flash = require('connect-flash')
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews');
-
+const session = require("express-session");
+const flash = require("connect-flash");
+const campgrounds = require("./routes/campgrounds");
+const reviews = require("./routes/reviews");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require('./models/user');
 mongoose
   .connect("mongodb://127.0.0.1:27017/yelp-camp")
   .then(() => {
@@ -29,29 +31,39 @@ app.use(express.urlencoded({ extended: true }));
 
 //in order override the POST requests to whatever request needed
 app.use(methodOverride("_method"));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 const sessionConfig = {
-  secret: 'thisshouldbeabettersecret',
+  secret: "thisshouldbeabettersecret",
   resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7
-  }
-}
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
 app.use(session(sessionConfig));
 app.use(flash());
-app.use((req, res ,next) => {
-  res.locals.success = req.flash('success')
-  res.locals.error = req.flash('error');
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
   next();
+});
+
+app.get('/fakeUser', async (req, res) => {
+  const user = new User({email: 'enochadeleye3@gmail.com', username: 'enoch'})
+  const newUser = await User.register(user, 'chicken')
+  res.send(newUser);
 })
-
-app.use('/campgrounds', campgrounds);
-app.use('/campgrounds/:id/reviews', reviews);
-
+app.use("/campgrounds", campgrounds);
+app.use("/campgrounds/:id/reviews", reviews);
 
 //default route
 app.get("/", (req, res) => {
