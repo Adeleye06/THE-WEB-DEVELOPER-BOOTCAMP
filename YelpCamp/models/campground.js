@@ -1,15 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Review = require('./review');
-mongoose
-  .connect("mongodb://127.0.0.1:27017/yelp-camp" )
-  .then(() => {
-    console.log(" MONGO CONNECTION OPEN");
-  })
-  .catch((err) => {
-    console.log("OH NO ERROR, MONGO CONNECTION ERROR");
-    console.log(err);
-  });
 
 const CampgroundSchema = new Schema({
     title: String,
@@ -17,6 +8,10 @@ const CampgroundSchema = new Schema({
     price: Number,
     description: String,
     location: String,
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: 'User' 
+    },
     reviews: [
       {
         type: Schema.Types.ObjectId,

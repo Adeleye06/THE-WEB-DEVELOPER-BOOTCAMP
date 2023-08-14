@@ -12,11 +12,15 @@
         <li class="list-group-item text-muted">
           <%= foundCampground.location%>
         </li>
+        <li class="list-group-item">
+          Submitted by <%= foundCampground.author.username%>
+        </li>
         <li class="list-group-item text-muted">
           $<%= foundCampground.price%> / night
         </li>
         <li class="list-group-item text-muted">Vestibulum et eros</li>
       </ul>
+      <% if(currentUser && foundCampground.author.equals(currentUser._id)){ %>
       <div class="card-body">
         <a
           href="/campgrounds/<%=foundCampground._id%>/edit"
@@ -31,6 +35,7 @@
           <button class="btn btn-danger">Delete</button>
         </form>
       </div>
+      <% } %>
       <div class="card-footer text-muted">2 days ago</div>
     </div>
   </div>
