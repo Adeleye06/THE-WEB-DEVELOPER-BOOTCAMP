@@ -3,18 +3,12 @@ const router = express.Router();
 const catchAsync = require("../utilities/catchAsync");
 const Campground = require("../models/campground");
 const {isLoggedIn, isAuthor, validateCampground} = require('../middleware');
-
+const campgrounds = require('../controllers/campgrounds')
 //route to serve the form for a new campground
-router.get("/new", isLoggedIn, (req, res) => {
-    res.render("campgrounds/new");
-  });
+router.get("/new", isLoggedIn,(campgrounds.renderNewForm));
   
   //route to access all campgrounds
-  router.get("/", catchAsync(async (req, res) => {
-      const allCampgrounds = await Campground.find({});
-      res.render("campgrounds/index", { allCampgrounds });
-    })
-  );
+  router.get("/", catchAsync(campgrounds.index));
   
   //route that adds the new campground to the database
   router.post("/", isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
@@ -28,7 +22,12 @@ router.get("/new", isLoggedIn, (req, res) => {
   
   router.get("/:id", catchAsync(async (req, res) => {
       const { id } = req.params;
-      const foundCampground = await Campground.findById(id).populate('reviews').populate('author');
+      const foundCampground = await Campground.findById(id).populate({
+        path: 'reviews',
+        populate: {
+          path: 'author'
+        }
+      }).populate('author');
       console.log(foundCampground);
       if(!foundCampground){
         req.flash('error', 'Cannot find that campground')
