@@ -3,6 +3,8 @@ const router = express.Router();
 const catchAsync = require("../utilities/catchAsync");
 const {isLoggedIn, isAuthor, validateCampground} = require('../middleware');
 const campgrounds = require('../controllers/campgrounds')
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'});
 
 router.route('/')
   //route to access all campgrounds
