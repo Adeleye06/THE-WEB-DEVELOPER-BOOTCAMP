@@ -28,7 +28,20 @@ mongoose
             author: "64d9530773c37d2dbe4a6840",
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            image: `https://source.unsplash.com/collection/483251`,
+            images: [
+              {
+                url: 'https://res.cloudinary.com/davmjz48k/image/upload/v1692399416/YelpCamp/gvoyh8uhuskpwtjahppo.png',
+                filename: 'YelpCamp/gvoyh8uhuskpwtjahppo'
+              },
+              {
+                url: 'https://res.cloudinary.com/davmjz48k/image/upload/v1692399416/YelpCamp/p1tsj80zsd6kwk6jhmsd.png',
+                filename: 'YelpCamp/p1tsj80zsd6kwk6jhmsd'
+              },
+              {
+                url: 'https://res.cloudinary.com/davmjz48k/image/upload/v1692399416/YelpCamp/no9pf0dp5zpk1put9g2g.png',
+                filename: 'YelpCamp/no9pf0dp5zpk1put9g2g'
+              }
+            ],
             description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae fugit excepturi quibusdam magni modi incidunt culpa possimus molestiae nulla. Cupiditate obcaecati exercitationem pariatur rem quisquam optio ab harum quibusdam quia`,
             price: price
         })

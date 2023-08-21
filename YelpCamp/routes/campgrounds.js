@@ -11,7 +11,7 @@ router.route('/')
   //route to access all campgrounds
   .get(catchAsync(campgrounds.index))
   //route that adds new campgrounds to the database
-  .post(isLoggedIn, validateCampground, upload.array('image'), catchAsync(campgrounds.createCampground)) 
+  .post(isLoggedIn,upload.array('image'), validateCampground, catchAsync(campgrounds.createCampground)) 
 
 //route to serve the form for a new campground
 router.get("/new", isLoggedIn,(campgrounds.renderNewForm));
@@ -20,7 +20,7 @@ router.route('/:id')
   //route to show a campground
   .get(catchAsync(campgrounds.showCampground))
   //route that updates a campground
-  .put(isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground))
+  .put(isLoggedIn, isAuthor, upload.array('image'), validateCampground, catchAsync(campgrounds.updateCampground))
   //route that deletes the campground
   .delete(isAuthor, catchAsync(campgrounds.deleteCampground))
 

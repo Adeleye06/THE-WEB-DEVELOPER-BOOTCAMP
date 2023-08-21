@@ -7,6 +7,7 @@
       method="POST"
       novalidate
       class="validated-form"
+      enctype="multipart/form-data"
     >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
@@ -18,13 +19,11 @@
           value="<%= foundCampground.title %>"
           required
         />
-        <div class="valid-feedback">
-          Looks good
-        </div>
-      </div> 
+        <div class="valid-feedback">Looks good</div>
+      </div>
       <div class="mb-3">
         <label class="form-label" for="location">Location</label>
-       <input
+        <input
           class="form-control"
           type="text"
           id="location"
@@ -32,23 +31,19 @@
           value="<%=foundCampground.location%>"
           required
         />
-        <div class="valid-feedback">
-          Looks good
-        </div>
+        <div class="valid-feedback">Looks good</div>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="image">Image Url</label>
+        <label class="form-label input-group" for="image"
+          >Add more image(s)</label
+        >
         <input
+          type="file"
           class="form-control"
-          type="text"
           id="image"
-          name="campground[image]"
-          value="<%=foundCampground.image%>"
-          required
+          name="image"
+          multiple
         />
-        <div class="valid-feedback">
-          Looks good
-        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="price">Campground Price</label>
@@ -65,9 +60,7 @@
             value="<%=foundCampground.price%>"
             required
           />
-          <div class="valid-feedback">
-            Looks good
-          </div>
+          <div class="valid-feedback">Looks good</div>
         </div>
       </div>
       <div class="mb-3">
@@ -81,16 +74,23 @@
         >
 <%=foundCampground.description%></textarea
         >
-        <div class="valid-feedback">
-          Looks good
+        <div class="valid-feedback">Looks good</div>
+      </div>
+      <div class="mb-3">
+        <% foundCampground.images.forEach (function (img, i) { %>
+        <img src="<%= img.url %>" class="img-thumbnail" alt="" />
+        <div class="form-check-block">
+          <input type="checkbox" id="image-<%= i %>" name="deleteImages[]" value="<%= img.filename %>">
         </div>
+        <label for="image-<%= i %>">Delete?</label>
+        <% }) %>
       </div>
       <div class="mb-3">
         <button class="btn btn-info">Update Campground</button>
       </div>
     </form>
     <div class="mb-5">
-        <a href="/campgrounds/<%=foundCampground._id%>">Back to Campgrounds</a>
+      <a href="/campgrounds/<%=foundCampground._id%>">Back to Campgrounds</a>
     </div>
   </div>
 </div>
