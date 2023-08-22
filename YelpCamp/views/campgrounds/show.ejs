@@ -3,6 +3,7 @@
 
 <div class="row">
   <div class="col-6">
+    <div id='map' style='width: 400px; height: 300px;'></div>
     <div id="campgroundCarousel" class="carousel slide">
       <div class="carousel-inner">
         <% foundCampground.images.forEach((image, i) => { %>
@@ -22,7 +23,6 @@
       </button>
       <% } %>
     </div>
-
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title"><%= foundCampground.title %></h5>
@@ -153,3 +153,13 @@
     <% } %>
   </div>
 </div>
+
+<script>
+  mapboxgl.accessToken = '<%-process.env.MAPBOX_TOKEN%>';
+  const map = new mapboxgl.Map({
+      container: 'map', // container ID
+      style: 'mapbox://styles/mapbox/streets-v12', // style URL
+      center: [-74.5, 40], // starting position [lng, lat]
+      zoom: 9, // starting zoom
+  });
+  </script>
