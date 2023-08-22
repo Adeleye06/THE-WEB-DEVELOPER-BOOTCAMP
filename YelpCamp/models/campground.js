@@ -5,10 +5,7 @@ const Review = require('./review');
 const ImageSchema = new Schema({
   url: String,
   filename: String
-},/*  {
-  toJSON: {virtuals: true},
-  toObject: {virtuals: true}
-} */)
+})
 
 ImageSchema.virtual('thumbnail').get(function(){
   return this.url.replace('/upload', '/upload/w_200');
