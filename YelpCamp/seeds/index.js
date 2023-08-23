@@ -25,6 +25,7 @@ mongoose
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 10;
         const camp = new Campground({
+          //YOUR USER ID, MAKE SURE THIS USER EXISTS IN THE USER COLLECTIONS IN YOUR DB
             author: "64d9530773c37d2dbe4a6840",
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
@@ -34,6 +35,10 @@ mongoose
                 filename: 'YelpCamp/ria9uk9ppzero6fygayb'
               }
             ],
+            geometry: {
+              type: 'Point',
+              coordinates: [cities[random1000].longitude, cities[random1000].latitude]
+            },
             description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae fugit excepturi quibusdam magni modi incidunt culpa possimus molestiae nulla. Cupiditate obcaecati exercitationem pariatur rem quisquam optio ab harum quibusdam quia`,
             price: price
         })
