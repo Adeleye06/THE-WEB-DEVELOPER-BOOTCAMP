@@ -6,6 +6,9 @@
       zoom: 10, // starting zoom
   });
 
+  const nav = new mapboxgl.NavigationControl();
+  map.addControl(nav, 'top-right')
+
   new mapboxgl.Marker()
     .setLngLat(campground.geometry.coordinates)
     .setPopup(
