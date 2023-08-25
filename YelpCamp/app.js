@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 //in order override the POST requests to whatever request needed
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
-app.use(mongoSanitize);
+app.use(mongoSanitize());
 const sessionConfig = {
   secret: "thisshouldbeabettersecret",
   resave: false,
@@ -59,7 +59,6 @@ passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 app.use((req, res, next) => {
-  console.log(req.query);
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
