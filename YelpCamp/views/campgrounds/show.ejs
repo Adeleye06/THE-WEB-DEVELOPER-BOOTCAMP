@@ -7,7 +7,7 @@
       <div class="carousel-inner">
         <% foundCampground.images.forEach((image, i) => { %>
         <div class="carousel-item <%= i === 0 ? 'active' : ''  %>">
-          <img src="<%= image.url %>" class="d-block w-100" alt="">
+          <img crossorigin="anonymous" src="<%= image.url %>" class="d-block w-100" alt="">
         </div>
         <% }) %>
       </div>
@@ -60,7 +60,7 @@
   </div>
 
   <div class="col-6">
-    <div id=" map"></div>
+    <div id="map"></div>
     <% if(currentUser){ %>
     <h2>Leave a review</h2>
     <form

@@ -1,6 +1,8 @@
-if(process.env.NODE_ENV !== 'production'){
+/* if(process.env.NODE_ENV !== 'production'){
   require('dotenv').config();
-}
+} */
+
+require('dotenv').config();
 
 const express = require("express");
 const path = require("path");
@@ -18,6 +20,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/yelp-camp")
@@ -41,6 +45,7 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
 const sessionConfig = {
+  name: 'session',
   secret: "thisshouldbeabettersecret",
   resave: false,
   saveUninitialized: true,
@@ -52,6 +57,7 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 app.use(flash());
+/* app.use(helmet({contentSecurityPolicy: false})); */
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
