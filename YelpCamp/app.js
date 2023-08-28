@@ -4,6 +4,7 @@
 
 require('dotenv').config();
 
+
 const express = require("express");
 const path = require("path");
 const app = express();
@@ -21,10 +22,13 @@ const LocalStrategy = require("passport-local");
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoStore = require('connect-mongo');
+const dbUrl = 'mongodb://127.0.0.1:27017/yelp-camp';
+
 
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/yelp-camp")
+  .connect(dbUrl)
   .then(() => {
     console.log(" MONGO CONNECTION OPEN");
   })
@@ -43,7 +47,17 @@ app.use(express.urlencoded({ extended: true }));
 //in order override the POST requests to whatever request needed
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
-app.use(mongoSanitize());
+app.use(mongoSanitize({
+  replaceWith: '_'
+}));
+
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+      secret: 'thisshouldbeabettersecret!'
+  }
+});
 const sessionConfig = {
   name: 'session',
   secret: "thisshouldbeabettersecret",
